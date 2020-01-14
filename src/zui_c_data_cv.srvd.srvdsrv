@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service definition for CV data'
+define service ZUI_C_DATA_CV {
+  expose zc_data_cv as CVdata;
+}
