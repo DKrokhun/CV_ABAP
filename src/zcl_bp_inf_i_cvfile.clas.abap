@@ -1,0 +1,5 @@
+CLASS zcl_bp_inf_i_cvfile DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zinf_i_cvfile.
+ENDCLASS.
+
+CLASS zcl_bp_inf_i_cvfile IMPLEMENTATION.
+ENDCLASS.

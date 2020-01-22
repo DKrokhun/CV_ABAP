@@ -1,0 +1,22 @@
+managed implementation in class zcl_bp_inf_i_cvfile unique;
+
+define behavior for zinf_I_CVfile alias CVfile
+persistent table zinf_cv_file
+lock master
+//authorization master ( instance )
+//etag master <field_name>
+{
+
+
+  // dynamic field control
+  field ( features : instance ) cvid;
+
+  // standard operations for travel entity
+
+  create;
+  update;
+  delete;
+
+// instance action and dynamic action control
+action  ( features: instance ) upload result [1] $self;
+}

@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service definition for zinf_C_CVfile'
+define service ZUI_C_CVfile {
+  expose zinf_C_CVfile as CVfile;
+}
