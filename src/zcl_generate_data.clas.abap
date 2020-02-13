@@ -22,7 +22,7 @@ CLASS zcl_generate_data IMPLEMENTATION.
     itab = VALUE #(
   ( id = 1 name = 'Avro Lancaster' department = 'Aviation' )
   ( id = 2 name = 'Uziel Gal' department = 'Weaponry' )
-  ( id = 3 name = 'Kalashnikiv Mikhail' department = 'Weaponry' )
+  ( id = 3 name = 'Kalashnikov Mikhail' department = 'Weaponry' )
   ( id = 4 name = 'Mikoyan i Gurevich' department = 'Aviation' )
  ).
 

@@ -26,7 +26,11 @@ CLASS lhc_CVfile IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD upload.
+    SELECT MAX( id ) FROM zinf_cv_file INTO @DATA(lv_max).
 
+    DATA(ls_Line) = VALUE zinf_cv_file( id = lv_max ).
+
+    INSERT zinf_cv_file FROM @ls_line.
   ENDMETHOD.
 
 ENDCLASS.
