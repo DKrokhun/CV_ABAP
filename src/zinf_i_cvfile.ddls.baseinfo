@@ -6,7 +6,9 @@
 "ZINF_CV_FILE"
 ],
 "ASSOCIATED":
-[],
+[
+"ZI_DATA_CV"
+],
 "BASE":
 [],
 "ANNO_REF":

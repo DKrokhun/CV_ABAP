@@ -1,0 +1,26 @@
+managed implementation in class zcl_bp_i_data_cv unique;
+
+define behavior for zi_data_cv alias CV_data
+persistent table zinf_data_cv
+lock master
+//authorization master ( instance )
+//etag master <field_name>
+{
+  //  create;
+  //  update;
+  //  delete;
+
+  action ( features : instance )  upload result [1] $self;
+
+  association _CVfile { create; }
+}
+
+define behavior for zinf_I_CVfile alias CV_file
+persistent table zinf_cv_file
+lock dependent ( id = id )
+//authorization dependent( <local_field_name> = <target_field_name> )
+//etag master <field_name>
+{
+  //  update;
+  //  delete;
+}

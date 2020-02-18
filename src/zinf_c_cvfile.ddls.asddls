@@ -5,7 +5,7 @@
  headerInfo: { typeName: 'CV file', typeNamePlural: 'CV files', title: { type: #STANDARD, value: 'id' } } }
 
 @Search.searchable: true
-define root view entity zinf_C_CVfile
+define view entity zinf_C_CVfile
   as projection on zinf_I_CVfile
 {
       //zinf_I_CVfile
@@ -36,5 +36,7 @@ define root view entity zinf_C_CVfile
       cvname,
 
       cvftype,
-      cvcontent
+      cvcontent,
+      
+      _DataCV
 }

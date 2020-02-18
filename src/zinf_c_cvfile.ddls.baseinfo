@@ -6,9 +6,13 @@
 "ZINF_I_CVFILE"
 ],
 "ASSOCIATED":
-[],
+[
+"ZI_DATA_CV"
+],
 "BASE":
-[],
+[
+"ZINF_I_CVFILE"
+],
 "ANNO_REF":
 [],
 "VERSION":0

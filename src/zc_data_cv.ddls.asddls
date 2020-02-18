@@ -9,6 +9,7 @@
 
 define root view entity zc_data_cv
   as projection on zi_data_cv
+
 {
       //zi_data_cv
 
@@ -35,5 +36,7 @@ define root view entity zc_data_cv
       cvid,
       upload,
       email,
-      login
+      login,
+
+      _CVfile
 }

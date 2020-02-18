@@ -10,7 +10,9 @@ CLASS zcl_generate_data DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_generate_data IMPLEMENTATION.
+
+CLASS ZCL_GENERATE_DATA IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
     DATA:itab TYPE TABLE OF zinf_data_cv.
