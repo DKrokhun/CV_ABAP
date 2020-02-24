@@ -5,9 +5,9 @@
 CLASS lhc_DataCV DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
 
-    METHODS upload       FOR MODIFY IMPORTING   keys FOR ACTION CV_data~upload              RESULT result.
+    METHODS upload       FOR MODIFY IMPORTING   keys FOR ACTION CV_file~upload              RESULT result.
     METHODS get_features FOR FEATURES
-      IMPORTING keys REQUEST requested_features FOR CV_data RESULT result.
+      IMPORTING keys REQUEST requested_features FOR CV_file RESULT result.
 
 ENDCLASS.
 
