@@ -1,0 +1,20 @@
+CLASS zcl_save_cv DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  CLASS-METHODS save_cv IMPORTING i_scv_file TYPE zinf_cv_file.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_save_cv IMPLEMENTATION.
+METHOD save_cv.
+
+INSERT INTO zinf_cv_file VALUES @i_scv_file.
+
+ENDMETHOD.
+ENDCLASS.

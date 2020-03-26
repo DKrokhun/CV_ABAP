@@ -3,15 +3,13 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCL_BP_I_DATA_CV</CLSNAME>
+    <CLSNAME>ZCL_SAVE_CV</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Behavior Implementation for ZI_DATA_CV</DESCRIPT>
-    <CATEGORY>06</CATEGORY>
+    <DESCRIPT>Save cv data</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
-    <CLSDEFINT>ZI_DATA_CV</CLSDEFINT>
    </VSEOCLASS>
   </asx:values>
  </asx:abap>

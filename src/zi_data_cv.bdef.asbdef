@@ -24,5 +24,7 @@ lock dependent ( id = id )
     create;
     delete;
 
-  action ( features : instance )  upload result [1] $self;
+  action ( features : instance )  upload parameter zimport_structure result [1] $self;
+  //action ( features : instance )  upload result [1] $self;
+
 }
