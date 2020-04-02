@@ -1,6 +1,0 @@
-projection;
-
-define behavior for zc_data_cv alias Data_CV_behavior
-{
-  use action upload;
-}

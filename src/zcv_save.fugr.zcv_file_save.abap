@@ -1,15 +1,15 @@
-FUNCTION ZCV_FILE_SAVE.
+FUNCTION zcv_file_save.
 *"----------------------------------------------------------------------
 *"*"Local Interface:
 *"----------------------------------------------------------------------
-DATA: lt_insert TYPE TABLE OF zinf_cv_file.
-DATA: ls_insert TYPE zinf_cv_file.
-      ls_insert-id = 1.
-      ls_insert-cvid = 2.
+*DATA: lt_insert TYPE TABLE OF zinf_cv_file.
+*DATA: ls_insert TYPE zinf_cv_file.
+*      ls_insert-id = 1.
+*      ls_insert-cvid = 2.
+*
+*INSERT INTO zinf_cv_file VALUES @ls_insert.
 
-INSERT INTO zinf_cv_file VALUES @ls_insert.
-
-
+  COMMIT WORK.
 
 
 ENDFUNCTION.

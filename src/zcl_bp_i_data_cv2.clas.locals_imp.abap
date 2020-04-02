@@ -97,34 +97,42 @@ CLASS lhc_CV_file IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD upload.
-    DATA tsl TYPE timestampl.
+    DATA tsl TYPE timestamp.
+    DATA: lv_max_cvid TYPE i,
+          lt_file     TYPE TABLE OF zinf_cv_file.
+
+    FIELD-SYMBOLS: <ls_key> LIKE LINE OF keys.
+
+    ASSIGN keys[ 1 ] TO <ls_key>.
+    CHECK sy-subrc = 0.
+
+    SELECT MAX( cvid ) FROM zinf_cv_file WHERE id = @<ls_key>-id INTO @lv_max_cvid.
+
+    lv_max_cvid += 1.
 
     GET TIME STAMP FIELD tsl.
 
-    MODIFY ENTITY zinf_I_CVfile
-
-    UPDATE FROM VALUE #( FOR key IN keys ( cvid = key-cvid
-                                           id = key-id
-                                           cvname = 'New'
-                                           updated = tsl
-                                           %control-cvname = if_abap_behv=>mk-on
-                                           %control-updated = if_abap_behv=>mk-on ) )
-        FAILED failed
-        REPORTED reported.
-
-*    READ ENTITY zinf_I_CVfile
-*    FROM VALUE #( FOR key IN keys ( cvid = key-cvid
-*                                    id = key-id
-*                                    %control = VALUE #(
-*                                          updated       = if_abap_behv=>mk-on
-*                                          cvftype       = if_abap_behv=>mk-on
-*                                          cvname       = if_abap_behv=>mk-on
-*                                        ) ) )
-*                                     RESULT DATA(lt_file).
+*    MODIFY ENTITY zinf_I_CVfile
 *
-*    result =    VALUE #( FOR file IN lt_file ( cvid = file-cvid
-*                                               %param    = file
-*                                             ) ).
+*    UPDATE FROM VALUE #( FOR key IN keys ( cvid = lv_max_cvid
+*                                           id = key-id
+*                                           cvname = key-%param-cvname
+*                                           cvcontent = key-%param-cvcontent
+*                                           cvftype = key-%param-cvftype
+*                                           updated = tsl
+*                                           %control-cvname = if_abap_behv=>mk-on
+*                                           %control-updated = if_abap_behv=>mk-on ) )
+*        FAILED failed
+*        REPORTED reported.
+
+    lt_file = VALUE #( FOR key IN keys ( cvid      = lv_max_cvid
+                                         id        = key-id
+                                         cvname    = cl_http_utility=>unescape_url( key-%param-cvname )
+                                         cvcontent = cl_http_utility=>unescape_url( key-%param-cvcontent )
+                                         cvftype   = cl_http_utility=>unescape_url( key-%param-cvftype )
+                                         updated   = tsl ) ).
+
+    INSERT zinf_cv_file FROM TABLE @lt_file.
 
   ENDMETHOD.
 
@@ -153,6 +161,7 @@ CLASS lsc_zi_data_cv IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD save.
+*    CALL FUNCTION 'ZCV_FILE_SAVE'.
   ENDMETHOD.
 
 ENDCLASS.

@@ -30,7 +30,7 @@
       </item>
      </SERVICES>
     </CONTENT>
-    <PUBLISHED>true</PUBLISHED>
+    <REPAIR>true</REPAIR>
    </SRVB>
   </asx:values>
  </asx:abap>
