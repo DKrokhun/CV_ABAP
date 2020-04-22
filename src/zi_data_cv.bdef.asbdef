@@ -12,6 +12,8 @@ lock master
     delete;
 
   association _CVfile { create; }
+
+    action  uploadEmployeesList parameter zinf_cv_upload_list result [1] $self;
 }
 
 define behavior for zinf_I_CVfile alias CV_file

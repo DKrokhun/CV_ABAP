@@ -1,0 +1,40 @@
+<?sap.transform simple?>
+<!--<tt:transform xmlns:tt="http://www.sap.com/transformation-templates" xmlns:ddic="http://www.sap.com/abapxml/types/dictionary" xmlns:def="http://www.sap.com/abapxml/types/defined">
+
+
+
+  <tt:root name="EMPLOYEES" type="ddic:zinf_cv_tt_employee"></tt:root>
+
+  <tt:template>
+    <EMPLOYEES>
+      <tt:loop ref="EMPLOYEES">
+        <EMPLOYEE>
+          <FULLNAME tt:value-ref="fullname"></FULLNAME>
+          <EMAIL tt:value-ref="EMAIL"></EMAIL>
+          <POSITION tt:value-ref="POSITION"></POSITION>
+          <DEPARTMENT tt:value-ref="DEPARTMENT"></DEPARTMENT>
+        </EMPLOYEE>
+      </tt:loop>
+    </EMPLOYEES>
+  </tt:template>
+
+</tt:transform>-->
+
+<tt:transform xmlns:tt="http://www.sap.com/transformation-templates" xmlns:ddic="http://www.sap.com/abapxml/types/dictionary" xmlns:def="http://www.sap.com/abapxml/types/defined">
+  <tt:root name="Employees" type="ddic:ZINF_CV_TT_EMPLOYEE"/>
+  <tt:template name="XALIAS0">
+    <tt:context>
+      <tt:root name="Employees" type="ddic:ZINF_CV_TT_EMPLOYEE"/>
+    </tt:context>
+    <Employees>
+      <tt:loop ref="Employees">
+        <Employee>
+          <Fullname tt:value-ref="Fullname"/>
+          <Email tt:value-ref="Email"/>
+          <Position tt:value-ref="Position"/>
+          <Department tt:value-ref="Department"/>
+        </Employee>
+      </tt:loop>
+    </Employees>
+  </tt:template>
+</tt:transform>

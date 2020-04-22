@@ -69,6 +69,9 @@ CLASS lhc_CV_file DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS upload FOR MODIFY
       IMPORTING keys FOR ACTION CV_file~upload RESULT result.
 
+    METHODS uploadEmployeesList FOR MODIFY
+      IMPORTING keys FOR ACTION CV_data~uploadEmployeesList RESULT result.
+
     METHODS get_features FOR FEATURES
       IMPORTING keys REQUEST requested_features FOR CV_file RESULT result.
 
@@ -127,9 +130,9 @@ CLASS lhc_CV_file IMPLEMENTATION.
 
     lt_file = VALUE #( FOR key IN keys ( cvid      = lv_max_cvid
                                          id        = key-id
-                                         cvname    = cl_http_utility=>unescape_url( key-%param-cvname )
-                                         cvcontent = cl_http_utility=>unescape_url( key-%param-cvcontent )
-                                         cvftype   = cl_http_utility=>unescape_url( key-%param-cvftype )
+                                         cvname    = key-%param-cvname
+                                         cvcontent = key-%param-cvcontent
+                                         cvftype   = key-%param-cvftype
                                          updated   = tsl ) ).
 
     INSERT zinf_cv_file FROM TABLE @lt_file.
@@ -137,6 +140,44 @@ CLASS lhc_CV_file IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_features.
+  ENDMETHOD.
+
+  METHOD uploademployeeslist.
+    DATA: lt_table   TYPE TABLE OF zinf_cv_employee,
+          lt_data_cv TYPE TABLE OF zinf_data_cv,
+          lv_max_id  TYPE i.
+
+    FIELD-SYMBOLS: <ls_table>   TYPE zinf_cv_employee,
+                   <fs_data_cv> TYPE zinf_data_cv.
+
+    IF 1 = 0.
+    ENDIF.
+
+    DATA(xstring) = keys[ 1 ]-%param-cvcontent.
+
+    DATA(string) = cl_http_utility=>decode_base64( encoded = xstring ).
+
+    CALL TRANSFORMATION zifn_cv_upload_transformation SOURCE XML string
+    RESULT  Employees = lt_table.
+
+    DELETE FROM zinf_data_cv WHERE id IS NOT INITIAL.
+
+    lv_max_id += 1.
+
+    LOOP AT lt_table ASSIGNING <ls_table>.
+      APPEND INITIAL LINE TO lt_data_cv ASSIGNING <fs_data_cv>.
+
+      <fs_data_cv>-id = lv_max_id.
+      <fs_data_cv>-name = <ls_table>-fullname.
+      <fs_data_cv>-position_ = <ls_table>-position.
+      <fs_data_cv>-email = <ls_table>-email.
+      <fs_data_cv>-department = <ls_table>-department.
+      <fs_data_cv>-cvstatus = 'NeedToUpdate'.
+
+      lv_max_id += 1.
+    ENDLOOP.
+
+    INSERT zinf_data_cv FROM TABLE @lt_data_cv.
   ENDMETHOD.
 
 ENDCLASS.
