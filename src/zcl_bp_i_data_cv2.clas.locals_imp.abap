@@ -34,6 +34,26 @@ CLASS lhc_CV_data IMPLEMENTATION.
 
   METHOD update.
 
+  DATA: tsl TYPE timestamp,
+        itab like entities,
+        ls_update TYPE zinf_data_cv.
+
+        GET TIME STAMP FIELD tsl.
+
+     ls_update-cvstatus = entities[ 1 ]-cvstatus.
+     ls_update-cvstatusid = entities[ 1 ]-cvstatusid.
+     ls_update-updated = tsl.
+     ls_update-id = entities[ 1 ]-id.
+
+
+     UPDATE ZINF_DATA_CV SET
+     zinf_data_cv~cvstatus      = @ls_update-cvstatus,
+     zinf_data_cv~cvstatusid    = @ls_update-cvstatusid,
+     zinf_data_cv~updated       = @ls_update-updated
+     WHERE zinf_data_cv~id      = @ls_update-id.
+
+
+
 
   ENDMETHOD.
 
@@ -69,9 +89,6 @@ CLASS lhc_CV_file DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS upload FOR MODIFY
       IMPORTING keys FOR ACTION CV_file~upload RESULT result.
 
-    METHODS uploadEmployeesList FOR MODIFY
-      IMPORTING keys FOR ACTION CV_data~uploadEmployeesList RESULT result.
-
     METHODS get_features FOR FEATURES
       IMPORTING keys REQUEST requested_features FOR CV_file RESULT result.
 
@@ -93,6 +110,9 @@ CLASS lhc_CV_file IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD update.
+  DATA tsl TYPE timestampl.
+
+  GET TIME STAMP FIELD tsl.
 
   ENDMETHOD.
 
@@ -100,84 +120,55 @@ CLASS lhc_CV_file IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD upload.
-    DATA tsl TYPE timestamp.
-    DATA: lv_max_cvid TYPE i,
-          lt_file     TYPE TABLE OF zinf_cv_file.
 
-    FIELD-SYMBOLS: <ls_key> LIKE LINE OF keys.
+    DATA tsl TYPE timestampl.
+    DATA itab LIKE KEYS.
+    DATA: zfile TYPE STRING,
+          zname TYPE STRING,
+          ztype TYPE STRING,
+          zunescaped_string TYPE STRING.
 
-    ASSIGN keys[ 1 ] TO <ls_key>.
-    CHECK sy-subrc = 0.
+    DATA: lt_insert TYPE TABLE OF zinf_cv_file,
+          ls_insert TYPE zinf_cv_file,
+          lv_id TYPE INT4,
+          lv_cvid TYPE INT4.
 
-    SELECT MAX( cvid ) FROM zinf_cv_file WHERE id = @<ls_key>-id INTO @lv_max_cvid.
+*        zunescaped_string = cl_http_utility=>unescape_url( zfile ).
 
-    lv_max_cvid += 1.
 
-    GET TIME STAMP FIELD tsl.
+        SELECT MAX( id ) FROM zinf_cv_file INTO @DATA(lv_max_id).
+        SELECT MAX( cvid ) FROM zinf_cv_file INTO @DATA(lv_max_cvid).
 
-*    MODIFY ENTITY zinf_I_CVfile
-*
-*    UPDATE FROM VALUE #( FOR key IN keys ( cvid = lv_max_cvid
-*                                           id = key-id
-*                                           cvname = key-%param-cvname
-*                                           cvcontent = key-%param-cvcontent
-*                                           cvftype = key-%param-cvftype
-*                                           updated = tsl
-*                                           %control-cvname = if_abap_behv=>mk-on
-*                                           %control-updated = if_abap_behv=>mk-on ) )
-*        FAILED failed
-*        REPORTED reported.
+        lv_id = lv_max_id + 1.
+        lv_cvid = lv_max_cvid + 1.
 
-    lt_file = VALUE #( FOR key IN keys ( cvid      = lv_max_cvid
-                                         id        = key-id
-                                         cvname    = key-%param-cvname
-                                         cvcontent = key-%param-cvcontent
-                                         cvftype   = key-%param-cvftype
-                                         updated   = tsl ) ).
+        ls_insert-id = lv_id.
+        ls_insert-cvid = lv_cvid.
+        itab = KEYS.
 
-    INSERT zinf_cv_file FROM TABLE @lt_file.
+        zfile = itab[ 1 ]-%param-cvcontent.
+        zname = itab[ 1 ]-%param-cvname.
+        ztype = itab[ 1 ]-%param-cvftype.
+
+
+        GET TIME STAMP FIELD tsl.
+        GET TIME STAMP FIELD DATA(zv_tsl).
+        ls_insert-updated = zv_tsl. "timestamp field
+
+        ls_insert-cvcontent = itab[ 1 ]-%param-cvcontent.
+        ls_insert-cvftype = itab[ 1 ]-%param-cvftype.
+        ls_insert-cvname = itab[ 1 ]-%param-cvname.
+
+        INSERT INTO zinf_cv_file VALUES @ls_insert.
+
+*        zcl_save_cv=>save_cv( EXPORTING i_scv_file = ls_insert ).
+
+
+*     create(  ).
 
   ENDMETHOD.
 
   METHOD get_features.
-  ENDMETHOD.
-
-  METHOD uploademployeeslist.
-    DATA: lt_table   TYPE TABLE OF zinf_cv_employee,
-          lt_data_cv TYPE TABLE OF zinf_data_cv,
-          lv_max_id  TYPE i.
-
-    FIELD-SYMBOLS: <ls_table>   TYPE zinf_cv_employee,
-                   <fs_data_cv> TYPE zinf_data_cv.
-
-    IF 1 = 0.
-    ENDIF.
-
-    DATA(xstring) = keys[ 1 ]-%param-cvcontent.
-
-    DATA(string) = cl_http_utility=>decode_base64( encoded = xstring ).
-
-    CALL TRANSFORMATION zifn_cv_upload_transformation SOURCE XML string
-    RESULT  Employees = lt_table.
-
-    DELETE FROM zinf_data_cv WHERE id IS NOT INITIAL.
-
-    lv_max_id += 1.
-
-    LOOP AT lt_table ASSIGNING <ls_table>.
-      APPEND INITIAL LINE TO lt_data_cv ASSIGNING <fs_data_cv>.
-
-      <fs_data_cv>-id = lv_max_id.
-      <fs_data_cv>-name = <ls_table>-fullname.
-      <fs_data_cv>-position_ = <ls_table>-position.
-      <fs_data_cv>-email = <ls_table>-email.
-      <fs_data_cv>-department = <ls_table>-department.
-      <fs_data_cv>-cvstatus = 'NeedToUpdate'.
-
-      lv_max_id += 1.
-    ENDLOOP.
-
-    INSERT zinf_data_cv FROM TABLE @lt_data_cv.
   ENDMETHOD.
 
 ENDCLASS.
