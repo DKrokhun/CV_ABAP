@@ -22,10 +22,10 @@ CLASS ZCL_GENERATE_DATA IMPLEMENTATION.
 
 *   fill internal travel table (itab)
     itab = VALUE #(
-  ( id = 1 name = 'Avro Lancaster' department = 'Aviation' )
-  ( id = 2 name = 'Uziel Gal' department = 'Weaponry' )
-  ( id = 3 name = 'Kalashnikov Mikhail' department = 'Weaponry' )
-  ( id = 4 name = 'Mikoyan i Gurevich' department = 'Aviation' )
+  ( id = 1 name = 'Avro Lancaster' department = 'Aviation' cvstatus = 'NeedToUpdate' )
+  ( id = 2 name = 'Uziel Gal' department = 'Weaponry' cvstatus = 'NeedToUpdate' )
+  ( id = 3 name = 'Kalashnikov Mikhail' department = 'Weaponry' cvstatus = 'NeedToUpdate' )
+  ( id = 4 name = 'Mikoyan i Gurevich' department = 'Aviation' cvstatus = 'NeedToUpdate' )
  ).
 
 *   delete existing entries in the database table
