@@ -30,6 +30,7 @@ CLASS ZCL_GENERATE_DATA IMPLEMENTATION.
 
 *   delete existing entries in the database table
     DELETE FROM zinf_data_cv.
+    DELETE FROM zinf_cv_file.
 
 *   insert the new table entries
     INSERT zinf_data_cv FROM TABLE @itab.

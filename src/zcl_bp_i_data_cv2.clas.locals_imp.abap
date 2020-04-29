@@ -139,12 +139,13 @@ CLASS lhc_CV_file IMPLEMENTATION.
         SELECT MAX( id ) FROM zinf_cv_file INTO @DATA(lv_max_id).
         SELECT MAX( cvid ) FROM zinf_cv_file INTO @DATA(lv_max_cvid).
 
-        lv_id = lv_max_id + 1.
-        lv_cvid = lv_max_cvid + 1.
+        lv_id = lv_max_id.
+        lv_cvid = lv_max_cvid.
 
-        ls_insert-id = lv_id.
-        ls_insert-cvid = lv_cvid.
         itab = KEYS.
+        ls_insert-id = itab[ 1 ]-id.
+        ls_insert-cvid = lv_cvid + 1.
+
 
         zfile = itab[ 1 ]-%param-cvcontent.
         zname = itab[ 1 ]-%param-cvname.
